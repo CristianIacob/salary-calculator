@@ -1,11 +1,15 @@
+import { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
+
+import RateCalculator from "../components/RateCalculator";
+import TaxCalculator from "../components/TaxCalculator";
+import RaiseCalculator from "../components/RaiseCalculator";
+
 import styles from "../styles/Home.module.css";
-import NumberInput from "../components/NumberInput";
-import { ChangeEvent, useState } from "react";
 
 interface State {
   hourlyRate: string;
@@ -32,48 +36,17 @@ const Home: NextPage = () => {
         <CssBaseline />
         <Container maxWidth="lg">
           <Box sx={{ bgcolor: "#cfe8fc", height: "100vh", padding: "20px" }}>
-            <NumberInput
-              prefix="$"
-              label="Hourly Rate"
-              value={values.hourlyRate}
-              name="hourlyRate"
-              handleChange={(e: ChangeEvent<HTMLInputElement>) => {
-                setValues({
-                  ...values,
-                  [e.target.name]: e.target.value,
-                  monthlyRate: (Number(e.target.value) * 8 * 20).toString(),
-                  yearlyRate: (Number(e.target.value) * 8 * 20 * 12).toString(),
-                });
-              }}
-            />
-            <NumberInput
-              prefix="$"
-              label="Monthly Rate"
-              value={values.monthlyRate}
-              name="monthlyRate"
-              handleChange={(e: ChangeEvent<HTMLInputElement>) => {
-                setValues({
-                  ...values,
-                  [e.target.name]: e.target.value,
-                  hourlyRate: (Number(e.target.value) / 8 / 20).toString(),
-                  yearlyRate: (Number(e.target.value) * 12).toString(),
-                });
-              }}
-            />
-            <NumberInput
-              prefix="$"
-              label="Yearly Rate"
-              value={values.yearlyRate}
-              name="yearlyRate"
-              handleChange={(e: ChangeEvent<HTMLInputElement>) => {
-                setValues({
-                  ...values,
-                  [e.target.name]: e.target.value,
-                  hourlyRate: (Number(e.target.value) / 12 / 20 / 8).toString(),
-                  monthlyRate: (Number(e.target.value) / 12).toString(),
-                });
-              }}
-            />
+            <Box sx={{ bgcolor: "white", padding: "20px", display: "flex" }}>
+              <RateCalculator values={values} setValues={setValues} />
+              <TaxCalculator
+                hourlyRate={values.hourlyRate}
+                monthlyRate={values.monthlyRate}
+                yearlyRate={values.yearlyRate}
+              />
+            </Box>
+            <Box sx={{ bgcolor: "white", padding: "20px", display: "flex" }}>
+              <RaiseCalculator />
+            </Box>
           </Box>
         </Container>
       </main>

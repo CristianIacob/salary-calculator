@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { ChangeEventHandler, forwardRef } from "react";
 import NumberFormat from "react-number-format";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -7,14 +7,6 @@ import { InputAdornment } from "@mui/material";
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
   name: string;
-}
-
-interface NumberInput {
-  label: string;
-  name: string;
-  value: string;
-  handleChange: any;
-  prefix: string;
 }
 
 const NumberFormatCustom = forwardRef<NumberFormat<any>, CustomProps>(
@@ -40,6 +32,15 @@ const NumberFormatCustom = forwardRef<NumberFormat<any>, CustomProps>(
   }
 );
 
+interface NumberInput {
+  label: string;
+  name: string;
+  value: string;
+  handleChange?: ChangeEventHandler<HTMLInputElement>;
+  prefix: string;
+  disabled?: boolean;
+}
+
 export default function NumberInput(props: NumberInput) {
   return (
     <Box
@@ -54,6 +55,7 @@ export default function NumberInput(props: NumberInput) {
         value={props.value}
         onChange={props.handleChange}
         name={props.name}
+        disabled={props.disabled}
         id="formatted-numberformat-input"
         InputProps={{
           inputComponent: NumberFormatCustom as any,
